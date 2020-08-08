@@ -1,5 +1,7 @@
 // Your code goes here
 
+let dragged = null;
+
 // click event, #1
 let navEl = document.querySelector('.nav-container');
 navEl.addEventListener('click', (e) => {
@@ -12,8 +14,16 @@ navEl.addEventListener('click', (e) => {
         
      };
      e.stopPropagation(); // stops nav clicks from reaching body
-   
+     e.preventDefault() ; // because ??
     });
+
+let anchors = document.querySelectorAll('.btn');
+anchors.forEach ((el,index) => {
+    el.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+});
+
 
 // mouseenter event, mouseleave event, #2-3
 let busEl = document.querySelector('img');
@@ -31,6 +41,7 @@ busEl.addEventListener ('mouseleave', () => {
 let footEl = document.querySelector('.footer');
 footEl.addEventListener('mousedown', () => {
     footEl.style.backgroundColor = 'green';
+  
 }) ;
 
 footEl.addEventListener('mouseup', () => {
@@ -77,7 +88,30 @@ window.addEventListener('scroll', () => {
 
 });
 
+//drag and drop events #9 and 10
+
+document.addEventListener("dragstart", (event) => {
+    // store a ref. on the dragged elem
+    dragged = event.target;
+    console.log ('dragged this', dragged);
+  }, false);
+
+let dropZone = document.querySelector('.drop-zone');
+
+dropZone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+});
 
 
-
-
+dropZone.addEventListener("drop", (event) => {
+    const target = event.target;
+    if ( target) {
+        console.log('target acquired');
+                event.preventDefault();
+         // Get the id of the target and add the moved element to the target's DOM
+         dragged.parentNode.removeChild(dragged);
+        //  target.removeChild(target.childNodes[0]);
+         target.insertBefore(dragged, target.childNodes[0]);
+       
+  }
+});
